@@ -50,6 +50,8 @@ jobs:
           sed -i '/import androidx.datastore.preferences.core.clear/d' data/datastore/src/main/kotlin/com/noor/data/datastore/NoorAudioSessionRepository.kt
           sed -i 's/getWorkInfosForUniqueWork(uniqueWorkName(contentPackage.id)).await()/getWorkInfosForUniqueWorkFlow(uniqueWorkName(contentPackage.id)).first()/' engines/downloads/src/main/kotlin/com/noor/engines/downloads/WorkManagerDownloadEngine.kt
           sed -i 's/import com.batoulapps.adhan.DateComponents/import com.batoulapps.adhan.data.DateComponents/' engines/prayer/src/main/kotlin/com/noor/engines/prayer/AdhanPrayerEngine.kt
+          sed -i 's/firstOrNull(ContentPackage::isApprovedMushafPackage)/firstOrNull { it.isApprovedMushafPackage() }/g' data/repositories/src/main/kotlin/com/noor/data/repositories/InstalledMushafPageRepository.kt
+          sed -i 's/filter(ContentPackage::isApprovedTranslationPackage)/filter { it.isApprovedTranslationPackage() }/' data/repositories/src/main/kotlin/com/noor/data/repositories/InstalledTranslationEngine.kt
 
       - name: Set up Gradle 9.5.0
         uses: gradle/actions/setup-gradle@v4
