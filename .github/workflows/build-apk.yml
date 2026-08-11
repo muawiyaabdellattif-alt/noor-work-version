@@ -40,12 +40,13 @@ jobs:
         shell: bash
         run: sdkmanager "platforms;android-36" "build-tools;36.0.0"
 
-      - name: Apply CI SDK compatibility
+      - name: Apply CI compatibility
         working-directory: noor-android-foundation-v0.38.0
         shell: bash
         run: |
           sed -i 's/compileSdk = 37/compileSdk = 36/g' build-logic/src/main/kotlin/*.gradle.kts macrobenchmark/build.gradle.kts
           sed -i 's/targetSdk = 37/targetSdk = 36/g' build-logic/src/main/kotlin/*.gradle.kts macrobenchmark/build.gradle.kts
+          sed -i '/sourceSets.getByName("androidTest").assets.srcDir/d' data/room/build.gradle.kts
 
       - name: Set up Gradle 9.5.0
         uses: gradle/actions/setup-gradle@v4
