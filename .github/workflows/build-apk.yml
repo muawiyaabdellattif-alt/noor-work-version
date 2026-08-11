@@ -54,6 +54,10 @@ jobs:
           sed -i 's/filter(ContentPackage::isApprovedTranslationPackage)/filter { it.isApprovedTranslationPackage() }/' data/repositories/src/main/kotlin/com/noor/data/repositories/InstalledTranslationEngine.kt
           find features -name '*.kt' -exec sed -i 's/import androidx.compose.foundation.layout.rememberScrollState/import androidx.compose.foundation.rememberScrollState/' {} +
           find features -name '*.kt' -exec sed -i '/import androidx.compose.foundation.layout.weight/d' {} +
+          sed -i '/import androidx.compose.material3.MaterialTheme/a import androidx.compose.material3.ExperimentalMaterial3Api' features/reader/src/main/kotlin/com/noor/features/reader/ReaderScreen.kt
+          sed -i '/private fun ReadingModeSheet/i @OptIn(ExperimentalMaterial3Api::class)' features/reader/src/main/kotlin/com/noor/features/reader/ReaderScreen.kt
+          sed -i 's/constraints.maxHeight/maxHeightPx/g' features/reader/src/main/kotlin/com/noor/features/reader/ReaderScreen.kt
+          sed -i '/val expanded = maxWidth/a\        val maxHeightPx = constraints.maxHeight' features/reader/src/main/kotlin/com/noor/features/reader/ReaderScreen.kt
 
       - name: Set up Gradle 9.5.0
         uses: gradle/actions/setup-gradle@v4
