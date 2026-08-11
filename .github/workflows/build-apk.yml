@@ -52,6 +52,8 @@ jobs:
           sed -i 's/import com.batoulapps.adhan.DateComponents/import com.batoulapps.adhan.data.DateComponents/' engines/prayer/src/main/kotlin/com/noor/engines/prayer/AdhanPrayerEngine.kt
           sed -i 's/firstOrNull(ContentPackage::isApprovedMushafPackage)/firstOrNull { it.isApprovedMushafPackage() }/g' data/repositories/src/main/kotlin/com/noor/data/repositories/InstalledMushafPageRepository.kt
           sed -i 's/filter(ContentPackage::isApprovedTranslationPackage)/filter { it.isApprovedTranslationPackage() }/' data/repositories/src/main/kotlin/com/noor/data/repositories/InstalledTranslationEngine.kt
+          sed -i 's/import androidx.compose.foundation.layout.rememberScrollState/import androidx.compose.foundation.rememberScrollState/' features/audio/src/main/kotlin/com/noor/features/audio/AudioScreen.kt
+          sed -i '/import androidx.compose.foundation.layout.weight/d' features/audio/src/main/kotlin/com/noor/features/audio/AudioScreen.kt
 
       - name: Set up Gradle 9.5.0
         uses: gradle/actions/setup-gradle@v4
