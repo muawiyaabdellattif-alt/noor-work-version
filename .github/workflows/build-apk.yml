@@ -1,0 +1,61 @@
+name: Build Noor Android APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "source-package/**"
+      - ".github/workflows/build-apk.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Reconstruct governed source package
+        shell: bash
+        run: |
+          cat source-package/noor-v0.38.0.zip.b64.part-* | base64 --decode > noor-android-foundation-v0.38.0.zip
+          echo "ffbf105c814c86089a8ff14972c6d96b4f2e388c1179c8a3db519f418abed56f  noor-android-foundation-v0.38.0.zip" | sha256sum --check -
+          unzip -q noor-android-foundation-v0.38.0.zip
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android SDK 37
+        shell: bash
+        run: sdkmanager "platforms;android-37" "build-tools;37.0.0"
+
+      - name: Set up Gradle 9.5.0
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "9.5.0"
+
+      - name: Validate source
+        working-directory: noor-android-foundation-v0.38.0
+        run: python3 scripts/verify_source_policy.py
+
+      - name: Build debug APK
+        working-directory: noor-android-foundation-v0.38.0
+        run: gradle --no-daemon :app:assembleDebug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Noor-v0.38.0-debug-apk
+          path: noor-android-foundation-v0.38.0/app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
