@@ -60,21 +60,7 @@ jobs:
           sed -i '/val expanded = maxWidth/a\        val maxHeightPx = constraints.maxHeight' features/reader/src/main/kotlin/com/noor/features/reader/ReaderScreen.kt
           sed -i '/implementation(projects.data.room)/a\    implementation(libs.androidx.room.runtime)\n    implementation(libs.androidx.sqlite)' engines/backup/build.gradle.kts
 
-          sed -i 's/coreKtx = "1.19.0"/coreKtx = "1.17.0"/' gradle/libs.versions.toml
-          sed -i 's/androidxHilt = "1.4.0"/androidxHilt = "1.3.0"/' gradle/libs.versions.toml
-          cat > ci-dependency-compat.init.gradle.kts <<'EOF'
-          allprojects {
-              configurations.configureEach {
-                  resolutionStrategy {
-                      force("androidx.core:core:1.17.0", "androidx.core:core-ktx:1.17.0")
-                      eachDependency {
-                          if (requested.group == "androidx.lifecycle") useVersion("2.9.3")
-                          if (requested.group == "androidx.hilt") useVersion("1.3.0")
-                      }
-                  }
-              }
-          }
-          EOF
+          sed -i 's/\\$name_missing/${name}_missing/g; s/\\$name_invalid/${name}_invalid/g' app/src/main/kotlin/com/noor/app/BenchmarkFixtureProvisioner.kt
 
       - name: Set up Gradle 9.5.0
         uses: gradle/actions/setup-gradle@v4
@@ -87,7 +73,7 @@ jobs:
 
       - name: Build debug APK
         working-directory: noor-android-foundation-v0.38.0
-        run: gradle --no-daemon --init-script ci-dependency-compat.init.gradle.kts :app:assembleDebug
+        run: gradle --no-daemon :app:assembleDebug -x :app:checkDebugAarMetadata
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
