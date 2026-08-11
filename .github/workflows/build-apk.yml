@@ -47,6 +47,7 @@ jobs:
           sed -i 's/compileSdk = 37/compileSdk = 36/g' build-logic/src/main/kotlin/*.gradle.kts macrobenchmark/build.gradle.kts
           sed -i 's/targetSdk = 37/targetSdk = 36/g' build-logic/src/main/kotlin/*.gradle.kts macrobenchmark/build.gradle.kts
           sed -i '/sourceSets.getByName("androidTest").assets.srcDir/d' data/room/build.gradle.kts
+          sed -i '/import androidx.datastore.preferences.core.clear/d' data/datastore/src/main/kotlin/com/noor/data/datastore/NoorAudioSessionRepository.kt
 
       - name: Set up Gradle 9.5.0
         uses: gradle/actions/setup-gradle@v4
