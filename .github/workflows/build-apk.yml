@@ -58,6 +58,7 @@ jobs:
           sed -i '/private fun ReadingModeSheet/i @OptIn(ExperimentalMaterial3Api::class)' features/reader/src/main/kotlin/com/noor/features/reader/ReaderScreen.kt
           sed -i 's/constraints.maxHeight/maxHeightPx/g' features/reader/src/main/kotlin/com/noor/features/reader/ReaderScreen.kt
           sed -i '/val expanded = maxWidth/a\        val maxHeightPx = constraints.maxHeight' features/reader/src/main/kotlin/com/noor/features/reader/ReaderScreen.kt
+          sed -i '/implementation(projects.data.room)/a\    implementation(libs.androidx.room.runtime)\n    implementation(libs.androidx.sqlite)' engines/backup/build.gradle.kts
 
       - name: Set up Gradle 9.5.0
         uses: gradle/actions/setup-gradle@v4
