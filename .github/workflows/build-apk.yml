@@ -60,7 +60,7 @@ jobs:
           sed -i '/val expanded = maxWidth/a\        val maxHeightPx = constraints.maxHeight' features/reader/src/main/kotlin/com/noor/features/reader/ReaderScreen.kt
           sed -i '/implementation(projects.data.room)/a\    implementation(libs.androidx.room.runtime)\n    implementation(libs.androidx.sqlite)' engines/backup/build.gradle.kts
 
-          sed -i 's/\\$name_missing/${name}_missing/g; s/\\$name_invalid/${name}_invalid/g' app/src/main/kotlin/com/noor/app/BenchmarkFixtureProvisioner.kt
+          sed -i 's/\$name_missing/${name}_missing/g; s/\$name_invalid/${name}_invalid/g' app/src/main/kotlin/com/noor/app/BenchmarkFixtureProvisioner.kt
 
       - name: Set up Gradle 9.5.0
         uses: gradle/actions/setup-gradle@v4
